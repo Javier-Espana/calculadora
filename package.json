@@ -1,0 +1,13 @@
+{
+  "name": "calculadora",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jest",
+    "lint": "standard --fix | true"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "standard": "^17.1.0",
+    "eslint": "^8.57.1"
+  }
+}
