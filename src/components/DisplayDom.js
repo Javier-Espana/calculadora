@@ -4,6 +4,8 @@ export default class DisplayDom {
     this.display.id = 'display'
     this.display.textContent = '0'
     this.display.style.width = '95%'
+    this.display.style.maxWidth = '95%'
+
     this.value = '0'
   }
   setValue (val) {
