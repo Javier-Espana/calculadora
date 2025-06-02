@@ -14,7 +14,5 @@
    ```bash
    npm run lint
    ```
-4. Abre `index.html`.
-
-5. También lo puedes ver en este enlace [Calculadora](URL_AQUI)
+4. Abre el archivo `index.html` o también lo puedes ver en este enlace [Calculadora](URL_AQUI)
 
