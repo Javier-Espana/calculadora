@@ -14,5 +14,5 @@
    ```bash
    npm run lint
    ```
-4. Abre el archivo `index.html` o también lo puedes ver en este enlace [Calculadora](URL_AQUI)
+4. Abre el archivo `index.html` o también lo puedes ver en este enlace [Calculadora](https://calicheoficial.lat/23361/calculadora/index.html)
 
