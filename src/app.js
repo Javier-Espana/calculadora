@@ -145,8 +145,6 @@ class Calculator {
       second,
       this.operator
     )
-    // Solo mostrar ERROR si el resultado es negativo Y la operación NO es toggleSign
-    // Pero permitir negativos en el display si el usuario los ingresa manualmente
     if (!isNaN(result) && parseFloat(result) < 0 && this.operator !== '+/-') {
       this.display.update(result)
     } else {
