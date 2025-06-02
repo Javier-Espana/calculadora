@@ -1,4 +1,4 @@
-import Calculator from '../src/app.js'
+import { Calculator } from '../src/app.js'
 
 describe('Calculator', () => {
   let calculator
@@ -49,5 +49,13 @@ describe('Calculator', () => {
     calculator.handleInput('.')
     calculator.handleInput('5')
     expect(calculator.display.getCurrentValue()).toBe('5.5')
+  })
+
+  test('should calculate percentage as (a * b) / 100', () => {
+    calculator.handleInput('200')
+    calculator.handleInput('%')
+    calculator.handleInput('10')
+    calculator.handleInput('=')
+    expect(calculator.display.getCurrentValue()).toBe('20')
   })
 })

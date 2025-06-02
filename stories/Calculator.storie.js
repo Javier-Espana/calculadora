@@ -17,3 +17,23 @@ export const ButtonStory = () => {
   return button.render()
 }
 ButtonStory.storyName = 'Button (número)'
+
+export const DisplayErrorStory = () => {
+  const display = new Display()
+  display.update('ERROR')
+  return display.render()
+}
+DisplayErrorStory.storyName = 'Display (ERROR)'
+
+export const ButtonOperationStory = () => {
+  const button = new Button('+', () => alert('Operación +'))
+  return button.render()
+}
+ButtonOperationStory.storyName = 'Button (operación +)'
+
+export const DisplayDecimalStory = () => {
+  const display = new Display()
+  display.update('3.1415926')
+  return display.render()
+}
+DisplayDecimalStory.storyName = 'Display (decimales)'

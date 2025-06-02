@@ -11,7 +11,10 @@ export function useCalculator () {
       case '+': result = first + second; break
       case '-': result = first - second; break
       case '*': result = first * second; break
-      case '%': result = first % second; break
+      case '%':
+        // Calculadora estándar: porcentaje es (first * second) / 100
+        result = first * (second / 100)
+        break
       case '/':
         if (second === 0) return 'ERROR'
         result = first / second

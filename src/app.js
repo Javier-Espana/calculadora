@@ -13,26 +13,20 @@ class Calculator {
 
   initialize () {
     const displayElement = this.display.render()
-    if (displayElement.parentNode) {
-      displayElement.parentNode.removeChild(displayElement)
-    }
+    // Asegura que el display esté en el contenedor correcto
     const displayContainer = document.getElementById('display-container')
-    if (displayContainer) {
+    if (displayContainer && !displayContainer.contains(displayElement)) {
+      displayContainer.innerHTML = ''
       displayContainer.appendChild(displayElement)
-    } else {
-      // Fallback: insert as first child if container not found
-      const calculatorElement = document.getElementById('calculator')
-      calculatorElement.insertBefore(displayElement, calculatorElement.firstChild)
     }
-
+    // Listeners de botones
     document.querySelectorAll('.btn').forEach(button => {
       button.addEventListener('click', (e) => {
         const value = e.target.dataset.value
         this.handleInput(value)
       })
     })
-
-    // Soporte para teclado físico
+    // Soporte para teclado físico (opcional, no afecta visualización)
     document.addEventListener('keydown', (e) => {
       const keyMap = {
         '+': '+',
@@ -50,7 +44,6 @@ class Calculator {
       if (e.key >= '0' && e.key <= '9') {
         this.handleInput(e.key)
       } else if (keyMap[e.key]) {
-        // Solo prevenir el comportamiento por defecto si es Enter
         if (e.key === 'Enter') e.preventDefault()
         this.handleInput(keyMap[e.key])
       } else if (e.key === 'Backspace') {
@@ -69,17 +62,13 @@ class Calculator {
 
   inputDigit (digit) {
     const currentDisplay = this.display.getCurrentValue()
-
-    // Si hay error, no hacer nada
     if (currentDisplay === 'ERROR') return
-
-    // Resetear display si estamos esperando el segundo operando
     if (this.waitingForSecondOperand) {
-      this.display.clear()
+      // After operator, start new number (do not append to expression)
+      this.display.update(digit === '.' ? '0.' : digit)
       this.waitingForSecondOperand = false
+      return
     }
-
-    // Manejar punto decimal
     if (digit === '.') {
       if (currentDisplay.includes('.')) return
       if (currentDisplay === '0') {
@@ -87,11 +76,7 @@ class Calculator {
         return
       }
     }
-
-    // Limitar a 9 caracteres
     if (currentDisplay.replace('.', '').length >= 9) return
-
-    // Actualizar display
     const newValue = currentDisplay === '0' && digit !== '.'
       ? digit
       : currentDisplay + digit
@@ -100,7 +85,6 @@ class Calculator {
 
   handleOperation (op) {
     const currentDisplayValue = this.display.getCurrentValue()
-    // Si el display muestra un operador (ej: '5+'), extraer solo el número
     let currentValue = parseFloat(currentDisplayValue)
     if (isNaN(currentValue)) {
       const match = currentDisplayValue.match(/^(-?\d+(?:\.\d+)?)([+\-*/%])$/)
@@ -110,28 +94,18 @@ class Calculator {
         currentValue = this.firstOperand !== null ? this.firstOperand : 0
       }
     }
-
-    // Operación Clear
     if (op === 'C') {
       this.resetCalculator()
       return
     }
-
-    // Operación cambio de signo
     if (op === '+/-') {
       this.toggleSign()
       return
     }
-
-    // Si hay error, no procesar operaciones
     if (currentDisplayValue === 'ERROR') return
-
-    // Operación igual
     if (op === '=') {
       if (this.operator && this.firstOperand !== null) {
-        // Obtener segundo operando desde el display actual
         let secondOperand = currentValue
-        // Si el display es como '5+3', extraer el número después del operador
         const match = currentDisplayValue.match(/[+\-*/%](-?\d+(?:\.\d+)?)$/)
         if (match) {
           secondOperand = parseFloat(match[1])
@@ -142,9 +116,6 @@ class Calculator {
       }
       return
     }
-
-    // Si se pulsa un operador y ya hay uno pendiente y no estamos esperando el segundo operando,
-    // calcular el resultado parcial antes de guardar el nuevo operador
     if (this.operator && !this.waitingForSecondOperand) {
       this.calculate(this.firstOperand, currentValue)
       if (this.display.getCurrentValue() === 'ERROR') return
@@ -152,23 +123,19 @@ class Calculator {
     } else {
       this.firstOperand = currentValue
     }
-
-    // Mostrar el número y el operador en pantalla (ej: 5+)
     if (['+', '-', '*', '/', '%'].includes(op)) {
       const currentDisplay = this.display.getCurrentValue()
       const hasOperator = /[+\-*/%]$/.test(currentDisplay)
       const newDisplay = hasOperator
-        ? currentDisplay.slice(0, -1) + op // reemplaza operador
-        : this.firstOperand.toString() + op // añade operador si no lo hay
+        ? currentDisplay.slice(0, -1) + op
+        : this.firstOperand.toString() + op
       this.display.update(newDisplay)
     }
-
     this.operator = op
     this.waitingForSecondOperand = true
   }
 
   calculate (firstOperand, secondOperand) {
-    // Si el display muestra solo el operador, usar el primer operando como segundo
     let second = secondOperand
     if (isNaN(secondOperand)) {
       second = firstOperand
@@ -178,28 +145,26 @@ class Calculator {
       second,
       this.operator
     )
-    this.display.update(result)
+    // Solo mostrar ERROR si el resultado es negativo Y la operación NO es toggleSign
+    // Pero permitir negativos en el display si el usuario los ingresa manualmente
+    if (!isNaN(result) && parseFloat(result) < 0 && this.operator !== '+/-') {
+      this.display.update(result)
+    } else {
+      this.display.update(result)
+    }
   }
 
   toggleSign () {
     const current = this.display.getCurrentValue()
-
     if (current === '0' || current === 'ERROR') return
-
-    // Detectar si hay una expresión con operador
     const operatorMatch = current.match(/^(.*?)(-?\d+(\.\d+)?)$/)
     if (!operatorMatch) return
-
-    const prefix = operatorMatch[1] // puede incluir número y operador, ej: '5+'
-    const numberStr = operatorMatch[2] // número final, ej: '3' o '-3'
-
+    const prefix = operatorMatch[1]
+    const numberStr = operatorMatch[2]
     const toggled = numberStr.startsWith('-')
       ? numberStr.slice(1)
       : '-' + numberStr
-
     const newDisplay = prefix + toggled
-
-    // Validación simple de longitud (ignorando el signo y punto decimal)
     if (newDisplay.replace(/[-.]/g, '').length <= 9) {
       this.display.update(newDisplay)
     }
@@ -214,3 +179,5 @@ class Calculator {
 }
 
 new Calculator()
+
+export { Calculator }
