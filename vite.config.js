@@ -1,8 +1,9 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import eslint from 'vite-plugin-eslint'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), eslint()],
   test: {
     environment: 'jsdom',
     globals: true,
@@ -13,4 +14,5 @@ export default defineConfig({
       exclude: ['node_modules', 'src/**/*.stories.jsx']
     }
   }
+  
 })
