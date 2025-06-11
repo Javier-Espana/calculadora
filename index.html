@@ -3,49 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora Componentizada</title>
-  <link rel="stylesheet" href="./styles/main.css">
+  <title>Calculadora React</title>
+  <link rel="stylesheet" href="/src/styles/main.css">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23333'/%3E%3Ctext x='50%' y='50%' text-anchor='middle' dy='.35em' font-size='36' fill='%23ff9500' font-family='Arial'%3E%2B%3C/text%3E%3C/svg%3E">
 </head>
 <body>
-  <div id="calculator">
-    <!-- Display se insertará aquí -->
-    <div id="display-container"></div>
-    
-    <!-- Teclado -->
-    <div class="keyboard">
-      <div class="row">
-        <button class="btn operation" data-value="C">C</button>
-        <button class="btn operation" data-value="+/-">+/-</button>
-        <button class="btn operation" data-value="%">%</button>
-        <button class="btn operation" data-value="/">/</button>
-      </div>
-      <div class="row">
-        <button class="btn number" data-value="7">7</button>
-        <button class="btn number" data-value="8">8</button>
-        <button class="btn number" data-value="9">9</button>
-        <button class="btn operation" data-value="*">×</button>
-      </div>
-      <div class="row">
-        <button class="btn number" data-value="4">4</button>
-        <button class="btn number" data-value="5">5</button>
-        <button class="btn number" data-value="6">6</button>
-        <button class="btn operation" data-value="-">-</button>
-      </div>
-      <div class="row">
-        <button class="btn number" data-value="1">1</button>
-        <button class="btn number" data-value="2">2</button>
-        <button class="btn number" data-value="3">3</button>
-        <button class="btn operation" data-value="+">+</button>
-      </div>
-      <div class="row">
-        <button class="btn number zero" data-value="0">0</button>
-        <button class="btn number" data-value=".">.</button>
-        <button class="btn operation" data-value="=">=</button>
-      </div>
-    </div>
-  </div>
-
-  <script type="module" src="./src/app.js"></script>
+  <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
