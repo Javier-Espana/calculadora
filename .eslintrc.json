@@ -1,7 +1,6 @@
 {
   "extends": [
-    "standard",
-    "plugin:react/recommended"
+    "standard-with-typescript"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
