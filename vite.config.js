@@ -4,6 +4,11 @@ import eslint from 'vite-plugin-eslint'
 
 export default defineConfig({
   plugins: [react(), eslint()],
+  base: '/calculadora/', 
+   build: {
+    outDir: 'dist',
+    emptyOutDir: true
+  },
   test: {
     environment: 'jsdom',
     globals: true,
